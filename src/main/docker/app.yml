@@ -1,0 +1,22 @@
+version: '2'
+services:
+    choloto-app:
+        image: choloto
+        external_links:
+            - choloto-mysql:mysql
+            - choloto-elasticsearch:elasticsearch
+        environment:
+            - SPRING_PROFILES_ACTIVE=prod,swagger
+            - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/choloto?useUnicode=true&characterEncoding=utf8&useSSL=false
+            - JHIPSTER_SLEEP=10 # gives time for the database to boot before the application
+            - SPRING_DATA_ELASTICSEARCH_CLUSTER_NODES=elasticsearch:9300
+        ports:
+            - 8080:8080
+    choloto-mysql:
+        extends:
+            file: mysql.yml
+            service: choloto-mysql
+    choloto-elasticsearch:
+        extends:
+            file: elasticsearch.yml
+            service: choloto-elasticsearch
